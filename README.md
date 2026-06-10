@@ -51,6 +51,13 @@ Portfolio ECL by stage (see reports/ecl_summary.csv):
 Stage 1: 1.03M loans, 12.7% coverage | Stage 2: 9.7k loans, 41.1% |
 Stage 3: 262k loans, 63.1%.
 
+| Model | OOT AUC | Gini |
+|---|---|---|
+| Logistic regression (champion) | 0.7013 | 0.4026 |
+| XGBoost (challenger) | 0.7122 | 0.4243 |
+
+The modest challenger lift indicates the predictive ceiling lies in the at-origination information set, not model capacity. The interpretable champion is retained as the primary model.
+
 ```bash
 uv run python src/01_build_dataset.py
 uv run python src/02_clean_features.py
