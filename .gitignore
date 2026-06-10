@@ -1,3 +1,6 @@
-loan.csv
-loan.xlsx
-loans_resolved.parquet
+data/
+*.parquet
+*.joblib
+.venv/
+__pycache__/
+.DS_Store
