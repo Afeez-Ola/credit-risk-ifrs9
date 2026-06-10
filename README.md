@@ -22,18 +22,42 @@ src/
 ## Setup
 
 ```bash
-uv add pandas pyarrow scikit-learn matplotlib
+uv sync
 ```
 
 Place `loan.csv` (Kaggle Lending Club dataset) in `data/`.
 
 ## Run
 
+## Results
+
+PD model (logistic regression, out-of-time test on 242,856 loans
+issued after 2016-10):
+
+| Metric | Value |
+|---|---|
+| AUC | 0.7013 |
+| Gini | 0.4026 |
+| Score PSI (train -> test) | 0.011 |
+
+The model rank-orders risk even within Lending Club grades
+(within-grade AUC 0.59 to 0.65), adding information beyond the
+lender's own rating. Calibration analysis shows observed default
+rates exceeding predictions in mid deciles, reflecting worsening
+post-2016 vintages and motivating recalibration with a margin of
+conservatism.
+
+Portfolio ECL by stage (see reports/ecl_summary.csv):
+Stage 1: 1.03M loans, 12.7% coverage | Stage 2: 9.7k loans, 41.1% |
+Stage 3: 262k loans, 63.1%.
+
 ```bash
 uv run python src/01_build_dataset.py
 uv run python src/02_clean_features.py
 uv run python src/03_train_pd.py
-# 04-06 as they are implemented
+uv run python src/04_staging.py
+uv run python src/05_ecl.py
+uv run python src/06_validation.py
 ```
 
 ## Key methodology decisions
