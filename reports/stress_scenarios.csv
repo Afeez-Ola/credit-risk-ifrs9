@@ -1,0 +1,5 @@
+scenario,pd_multiplier,source,stage1_to_stage2
+baseline,1.0,no stress,0
+calibration_drift,1.1008200670150057,OOT observed / predicted default rate,10576
+policy_downside,1.3,config.SCENARIOS (judgemental),54347
+severe_vintage,1.045036592363405,worst mature vintage / mature average,3916

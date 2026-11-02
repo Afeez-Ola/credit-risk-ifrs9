@@ -17,6 +17,13 @@ src/
   04_staging.py         IFRS 9 stage allocation (SICR rules)
   05_ecl.py             LGD/EAD assumptions, ECL = PD x LGD x EAD
   06_validation.py      Discrimination, calibration, stability (PSI)
+  07_challenger.py      XGBoost challenger on the same out-of-time split
+  08_sicr_sensitivity.py  Stage 2 share and ECL as the SICR threshold moves
+  stress.py             Stress testing functions (unit tested in tests/)
+  09_stress_test.py     Data-derived stress scenarios + reverse stress test
+docs/
+  model_risk_note.md    Validation-style findings and recommended actions
+  stress_test_memo.md   One-page summary of the stress test
 ```
 
 ## Setup
@@ -28,6 +35,19 @@ uv sync
 Place `loan.csv` (Kaggle Lending Club dataset) in `data/`.
 
 ## Run
+
+```bash
+uv run python src/01_build_dataset.py
+uv run python src/02_clean_features.py
+uv run python src/03_train_pd.py
+uv run python src/04_staging.py
+uv run python src/05_ecl.py
+uv run python src/06_validation.py
+uv run python src/07_challenger.py
+uv run python src/08_sicr_sensitivity.py
+uv run python src/09_stress_test.py
+uv run pytest
+```
 
 ## Results
 
@@ -58,14 +78,37 @@ Stage 3: 262k loans, 63.1%.
 
 The modest challenger lift indicates the predictive ceiling lies in the at-origination information set, not model capacity. The interpretable champion is retained as the primary model.
 
-```bash
-uv run python src/01_build_dataset.py
-uv run python src/02_clean_features.py
-uv run python src/03_train_pd.py
-uv run python src/04_staging.py
-uv run python src/05_ecl.py
-uv run python src/06_validation.py
-```
+## Stress testing
+
+`09_stress_test.py` asks what a downturn does to ECL and which
+assumption breaks first. Stress is a multiplier on the 12-month PD, and
+performing loans are re-staged under each scenario so Stage 1 to Stage 2
+migration is captured. Scenarios come from the data, not a regulator:
+
+| Scenario | PD multiplier | Source |
+|---|---|---|
+| Calibration drift | 1.10 | Observed / predicted default rate, out-of-time sample |
+| Policy downside | 1.30 | Judgemental downside in `config.py` |
+| Severe vintage | 1.045 | Worst mature vintage (2012) / 2008 to 2013 average |
+
+Results (performing book of 1,041,952 loans):
+
+| Scenario | Performing ECL | Stage 1 to 2 migrations | Total ECL |
+|---|---|---|---|
+| Severe vintage | +5.2% | 3,916 | +2.1% |
+| Calibration drift | +12.0% | 10,576 | +4.9% |
+| Policy downside | +40.3% | 54,347 | +16.6% |
+
+Reverse stress test: performing ECL rises 50% at a PD multiplier of
+x1.40, and Stage 2 exceeds 10% of performing loans at x1.45. Provisions
+rise faster than PD because loans cross the SICR threshold into lifetime
+ECL. One-page summary: [`docs/stress_test_memo.md`](docs/stress_test_memo.md). Outputs:
+`reports/stress_summary.csv`, `stress_scenarios.csv`,
+`stress_reverse.csv`, `vintage_default_rates.csv`, `stress_curve.png`.
+
+Validation-style findings, including the SICR threshold sensitivity
+(Stage 2 ECL 62.9m at 2.0x vs 482.0m at 1.5x), are in
+[`docs/model_risk_note.md`](docs/model_risk_note.md).
 
 ## Key methodology decisions
 
