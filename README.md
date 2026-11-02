@@ -121,7 +121,9 @@ performing book and applies the CRR3 output floor (50% in 2025 rising to
 72.5% in 2030). With a 65% LGD, the floor binds only for retail loans with
 PD below 0.35% (2025) to 0.66% (2030), so for this unsecured book the
 internal model already requires more capital than the standardised
-approach. Brief: [`docs/crr3_output_floor_brief.md`](docs/crr3_output_floor_brief.md).
+approach: IRB RWA is 1.78 times standardised (19.6bn vs 11.0bn), only
+0.03% of exposure falls below the 2030 breakeven PD, and a x1.30 PD shock
+raises IRB RWA by 5.7% against a 40% rise in performing ECL. Brief: [`docs/crr3_output_floor_brief.md`](docs/crr3_output_floor_brief.md).
 Outputs: `reports/capital_*.csv`, `capital_dashboard.xlsx`,
 `capital_rw_curve.png`.
 
