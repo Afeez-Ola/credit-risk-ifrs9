@@ -21,9 +21,12 @@ src/
   08_sicr_sensitivity.py  Stage 2 share and ECL as the SICR threshold moves
   stress.py             Stress testing functions (unit tested in tests/)
   09_stress_test.py     Data-derived stress scenarios + reverse stress test
+  capital.py            IRB vs standardised RWA, CRR3 output floor (tested)
+  10_capital.py         Capital by scenario, floor path, breakeven PD, dashboard
 docs/
   model_risk_note.md    Validation-style findings and recommended actions
   stress_test_memo.md   One-page summary of the stress test
+  crr3_output_floor_brief.md  Client-style brief on the CRR3 output floor
 ```
 
 ## Setup
@@ -46,6 +49,7 @@ uv run python src/06_validation.py
 uv run python src/07_challenger.py
 uv run python src/08_sicr_sensitivity.py
 uv run python src/09_stress_test.py
+uv run python src/10_capital.py
 uv run pytest
 ```
 
@@ -109,6 +113,17 @@ ECL. One-page summary: [`docs/stress_test_memo.md`](docs/stress_test_memo.md). O
 Validation-style findings, including the SICR threshold sensitivity
 (Stage 2 ECL 62.9m at 2.0x vs 482.0m at 1.5x), are in
 [`docs/model_risk_note.md`](docs/model_risk_note.md).
+
+## Capital and the CRR3 output floor
+
+`10_capital.py` compares IRB and standardised Pillar 1 capital for the
+performing book and applies the CRR3 output floor (50% in 2025 rising to
+72.5% in 2030). With a 65% LGD, the floor binds only for retail loans with
+PD below 0.35% (2025) to 0.66% (2030), so for this unsecured book the
+internal model already requires more capital than the standardised
+approach. Brief: [`docs/crr3_output_floor_brief.md`](docs/crr3_output_floor_brief.md).
+Outputs: `reports/capital_*.csv`, `capital_dashboard.xlsx`,
+`capital_rw_curve.png`.
 
 ## Key methodology decisions
 
