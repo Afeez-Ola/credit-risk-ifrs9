@@ -44,7 +44,7 @@ Performing book: 1,041,952 loans, exposure 14.73bn.
 | Calibration drift | 1.101 | +2.4% | 1.61bn | 0.88bn |
 | Policy downside | 1.30 | +5.7% | 1.66bn | 0.88bn |
 
-The same x1.30 shock raises performing ECL by 40% in my IFRS 9 stress test, but IRB RWA by only 5.7%. The reason is that most of this book sits on the flat upper part of the retail risk weight curve (median PD around 15%), where extra PD adds little capital, while expected loss rises in proportion to PD.
+The same x1.30 shock raises performing ECL by 40% in my IFRS 9 stress test, but IRB RWA by only 5.7%. The reason is that most of this book sits on the flat upper part of the retail risk weight curve (mean PD from 5.9% in grade A to 47.6% in grade G), where extra PD adds little capital, while expected loss rises in proportion to PD.
 
 ## Implications for a lender like this
 1. **The output floor is not the binding constraint.** Capital planning effort is better spent on PD calibration and on the IRB versus standardised choice.
