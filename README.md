@@ -89,10 +89,20 @@ migration is captured. Scenarios come from the data, not a regulator:
 |---|---|---|
 | Calibration drift | 1.10 | Observed / predicted default rate, out-of-time sample |
 | Policy downside | 1.30 | Judgemental downside in `config.py` |
-| Severe vintage | from data | Worst mature vintage / mature average |
+| Severe vintage | 1.045 | Worst mature vintage (2012) / 2008 to 2013 average |
 
-A reverse stress test finds the multiplier at which performing ECL rises
-50% and at which Stage 2 exceeds 10% of performing loans. Outputs:
+Results (performing book of 1,041,952 loans):
+
+| Scenario | Performing ECL | Stage 1 to 2 migrations | Total ECL |
+|---|---|---|---|
+| Severe vintage | +5.2% | 3,916 | +2.1% |
+| Calibration drift | +12.0% | 10,576 | +4.9% |
+| Policy downside | +40.3% | 54,347 | +16.6% |
+
+Reverse stress test: performing ECL rises 50% at a PD multiplier of
+x1.40, and Stage 2 exceeds 10% of performing loans at x1.45. Provisions
+rise faster than PD because loans cross the SICR threshold into lifetime
+ECL. One-page summary: [`docs/stress_test_memo.md`](docs/stress_test_memo.md). Outputs:
 `reports/stress_summary.csv`, `stress_scenarios.csv`,
 `stress_reverse.csv`, `vintage_default_rates.csv`, `stress_curve.png`.
 

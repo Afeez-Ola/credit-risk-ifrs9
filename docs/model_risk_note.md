@@ -52,7 +52,20 @@ Each of these biases ECL upward or adds unmeasured error.
 - the judgemental downside in `config.py` (x1.30)
 - a severe scenario sized from the worst mature vintage
 
-It re-stages performing loans under each scenario, so the Stage 1 to Stage 2 cliff behind finding 2 shows up in the results. It also reports a reverse stress test: the multiplier at which performing ECL rises by 50%, and the multiplier at which Stage 2 exceeds 10% of performing loans. Results are written to `reports/stress_*.csv` and `reports/stress_curve.png`.
+It re-stages performing loans under each scenario, so the Stage 1 to Stage 2 cliff behind finding 2 shows up in the results. Results are in `reports/stress_*.csv` and `reports/stress_curve.png`.
+
+| Scenario | PD x | Performing ECL | Stage 1 to 2 migrations | Total ECL |
+|---|---|---|---|---|
+| Severe vintage (2012 vs 2008 to 2013 average) | 1.045 | +5.2% | 3,916 | +2.1% |
+| Calibration drift | 1.101 | +12.0% | 10,576 | +4.9% |
+| Policy downside | 1.30 | +40.3% | 54,347 | +16.6% |
+
+Reverse stress: performing ECL +50% at x1.40; Stage 2 above 10% of performing loans at x1.45.
+
+**Finding 7: provisions are convex in PD because of staging (high).** A 30% PD shock raises performing ECL by 40% and Stage 2 ECL by 7.35 times, as loans cross the SICR threshold into lifetime ECL. This confirms finding 2 under stress.
+
+**Finding 8: the history holds no usable severe scenario (medium).** The worst mature vintage is only 4.5% above the mature average, and the 2008 vintage (15.8%) defaulted less than 2012 (16.2%). The model's own calibration drift is a larger shock than any mature vintage.
+*Action:* size severe scenarios from external macroeconomic data (for example unemployment-linked PD shifts) instead of this portfolio's history.
 
 ## 5. Overall view
 The model ranks risk reasonably and is stable. The level of predicted PD is too low on recent vintages, and the ECL figure is driven more by staging and LGD/EAD assumptions than by the PD model. Priorities: (1) justify the SICR threshold, (2) recalibrate, (3) replace the flat LGD/EAD assumptions.
